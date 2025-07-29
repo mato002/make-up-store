@@ -68,11 +68,20 @@
         <div class="d-flex justify-content-between mt-4">
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Continue Shopping</a>
             <div>
-                @guest
-                    <p class="text-muted">You need to <a href="{{ route('login') }}">login</a> to proceed to checkout.</p>
-                @else
-                    <a href="#" class="btn btn-primary">Proceed to Checkout</a>
-                @endguest
+                <!-- Proceed to Checkout Toggle -->
+                <button class="btn btn-primary" onclick="document.getElementById('checkout-section').classList.toggle('d-none')">
+                    Proceed to Checkout
+                </button>
+
+                <div id="checkout-section" class="mt-3 d-none">
+                    @guest
+                        <div class="alert alert-warning">
+                            You need to <a href="{{ route('regular.login') }}">login</a> to continue with checkout.
+                        </div>
+                    @else
+                        <a href="{{ route('checkout.show') }}" class="btn btn-success">Go to Payment Instructions</a>
+                    @endguest
+                </div>
             </div>
         </div>
 

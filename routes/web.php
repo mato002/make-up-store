@@ -82,6 +82,28 @@ use App\Http\Controllers\PageController;
 Route::get('/terms-and-conditions', [PageController::class, 'terms'])->name('pages.terms');
 Route::get('/privacy-policy', [PageController::class, 'privacy'])->name('pages.privacy');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [\App\Http\Controllers\CheckoutController::class, 'show'])->name('checkout.show');
+    Route::post('/checkout/confirm', [\App\Http\Controllers\CheckoutController::class, 'confirm'])->name('checkout.confirm');
+});
+
+
+use App\Http\Controllers\RegularUser\AuthController;
+
+Route::prefix('regular')->group(function () {
+    Route::get('login', [AuthController::class, 'showLogin'])->name('regular.login');
+    Route::post('login', [AuthController::class, 'login'])->name('regular.login.submit');
+    
+    Route::get('register', [AuthController::class, 'showRegister'])->name('regular.register');
+    Route::post('register', [AuthController::class, 'register'])->name('regular.register.submit');
+    
+    Route::post('logout', [AuthController::class, 'logout'])->name('regular.logout');
+
+    Route::get('/dashboard', function () {
+        return view('regular.dashboard');
+    })->middleware('auth:regular')->name('regular.dashboard');
+});
+
 
 
 require __DIR__.'/auth.php';

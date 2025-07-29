@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // Guard for regular users (MakeUp Store Customers)
+        'regular' => [
+            'driver' => 'session',
+            'provider' => 'regular_users',
+        ],
     ],
 
     /*
@@ -63,6 +69,12 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
+        ],
+
+        // Provider for regular users (MakeUp Store Customers)
+        'regular_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\RegularUser::class,
         ],
 
         // 'users' => [
@@ -93,6 +105,14 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        // Password reset config for regular users
+        'regular_users' => [
+            'provider' => 'regular_users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
