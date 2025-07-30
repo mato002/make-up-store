@@ -13,7 +13,7 @@
             <p>{{ $product->description }}</p>
             <h4 class="text-primary">${{ number_format($product->price, 2) }}</h4>
 
-            <form action="{{ route('cart.add', $product->id) }}" method="POST">
+            <form id="addToCartForm" method="POST">
                 @csrf
                 <div class="mb-3">
                     <label for="quantity" class="form-label">Quantity</label>
@@ -23,4 +23,36 @@
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('addToCartForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const quantity = document.getElementById('quantity').value;
+            const token = '{{ csrf_token() }}';
+            const url = '{{ route('cart.add', $product->id) }}';
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({ quantity: quantity })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '{{ route('cart.index') }}';
+                } else {
+                    return response.json().then(data => {
+                        alert(data.message || 'Something went wrong.');
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while adding to cart.');
+            });
+        });
+    </script>
 @endsection

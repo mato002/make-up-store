@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
-
-use Illuminate\Database\Seeder;
 use App\Models\Category;
+use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        $categories = ['Lipstick', 'Foundation', 'Eyeliner', 'Mascara', 'Blush'];
+        $categories = ['Foundation', 'Lipstick', 'Mascara', 'Eyeshadow', 'Blush'];
 
-        foreach ($categories as $cat) {
-            Category::create(['name' => $cat]);
+        foreach ($categories as $name) {
+            Category::create(['name' => $name]);
         }
     }
 }
